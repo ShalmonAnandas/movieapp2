@@ -27,8 +27,7 @@ class TrendingController extends GetxController {
       for (var i = 0; i < rawData.length; i++) {
         trendingData.add(TrendingMovieModel.fromJson(rawData[i]));
       }
-
-      return trendingData;
+      dataParsing();
     } catch (e) {
       log("MainScreenError $e");
     } finally {
@@ -37,8 +36,8 @@ class TrendingController extends GetxController {
   }
 
   dataParsing() {
-    trendingData.value.forEach((element) {
+    for (var element in trendingData) {
       trendingPosterPath.add(element.posterPath);
-    });
+    }
   }
 }
