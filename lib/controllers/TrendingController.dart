@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart' as Dio;
+import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:movie_app_2/models/trendingMovieModel.dart';
 import 'package:movie_app_2/utils/dataconstants.dart';
@@ -21,7 +21,7 @@ class TrendingController extends GetxController {
     };
     isTrendingLoading(true);
     try {
-      Dio.Response response = await DataConstants.dio.get(url, options: Dio.Options(headers: headers));
+      dio.Response response = await DataConstants.dio.get(url, options: dio.Options(headers: headers));
       List rawData = response.data["results"];
 
       for (var i = 0; i < rawData.length; i++) {

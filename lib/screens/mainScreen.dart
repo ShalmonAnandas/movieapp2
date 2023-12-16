@@ -14,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   List<Widget> tabItems = [
-    const HomeScreen(),
+    HomeScreen(),
     const Center(child: Text("Movies")),
     const Center(child: Text("TV Shows")),
     const Center(child: Text("Settings")),
@@ -38,18 +38,16 @@ class _MainScreenState extends State<MainScreen> {
             icon: const Icon(Icons.tv_outlined),
             title: Text('TV Shows', style: GoogleFonts.lato()),
           ),
-          FlashyTabBarItem(
-            icon: const Icon(Icons.settings_outlined),
-            title: Text('Settings', style: GoogleFonts.lato()),
-          ),
+          // FlashyTabBarItem(
+          //   icon: const Icon(Icons.settings_outlined),
+          //   title: Text('Settings', style: GoogleFonts.lato()),
+          // ),
         ],
         onItemSelected: (index) => setState(() {
           _selectedIndex = index;
         }),
       ),
-      body: Center(
-        child: tabItems[_selectedIndex],
-      ),
+      body: tabItems[_selectedIndex],
     );
   }
 }

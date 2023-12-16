@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -16,11 +18,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String trendingMovieTitle = "";
+  String backdropPath = "";
 
   @override
   void initState() {
-    DataConstants.trendingController.getTrending("movie");
+    DataConstants.trendingController.getTrending("all");
     // trendingMovieTitle = TrendingController.trendingData[0].title;
+    // backdropPath = "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[0].posterPath}";
     super.initState();
   }
 
@@ -30,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
     return Obx(
       () {
+        backdropPath = TrendingController.isTrendingLoading.value == true
+            ? ""
+            : "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[0].posterPath}";
         return TrendingController.isTrendingLoading.value == true
             ? Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
@@ -74,76 +81,108 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               )
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                          height: 550,
-                          enlargeCenterPage: true,
-                          autoPlayInterval: Duration(milliseconds: 10),
-                          autoPlay: true,
-                          enlargeFactor: 0.2,
-                          initialPage: 0,
-                          onPageChanged: (index, reason) {
-                            setState(
-                              () {
-                                trendingMovieTitle = TrendingController.trendingData[index].title;
-                              },
-                            );
-                          },
+            : Stack(
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 1000),
+                    child: Container(
+                      key: ValueKey<String>(backdropPath),
+                      height: MediaQuery.of(context).size.height,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            backdropPath,
+                          ),
+                          fit: BoxFit.cover,
                         ),
-                        items: TrendingController.trendingData.map(
-                          (i) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: width,
-                                    // margin: const EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      color: Colors.white,
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${i.posterPath}",
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                      ),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.transparent, Colors.black54, Colors.black],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 500,
+                              enlargeCenterPage: true,
+                              enlargeFactor: 0.2,
+                              initialPage: 0,
+                              // padEnds: false,
+                              onPageChanged: (index, reason) {
+                                setState(
+                                  () {
+                                    trendingMovieTitle = TrendingController.trendingData[index].title;
+                                    backdropPath =
+                                        "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[index].posterPath}";
+                                  },
                                 );
                               },
-                            );
-                          },
-                        ).toList(),
-                      ),
+                            ),
+                            items: TrendingController.trendingData.map(
+                              (i) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        width: width,
+                                        // margin: const EdgeInsets.all(16.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(12.0),
+                                          color: Colors.white,
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${i.posterPath}",
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ).toList(),
+                          ),
+                        ),
+                        Text(
+                          trendingMovieTitle,
+                          style: GoogleFonts.lato(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height * 0.05) * 20,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 20,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {},
+                                title: Text(TrendingController.trendingData[index].title),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      trendingMovieTitle,
-                      style: GoogleFonts.lato(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: TrendingController.trendingData.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {},
-                            title: const Text("shalmon"),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               );
       },
     );

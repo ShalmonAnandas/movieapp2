@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'Movie Please',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        brightness: Brightness.dark,
       ),
       home: const MainScreen(),
     );
