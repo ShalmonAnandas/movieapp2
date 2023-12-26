@@ -1,10 +1,14 @@
+// To parse this JSON data, do
+//
+//     final trendingModel = trendingModelFromJson(jsonString);
+
 import 'dart:convert';
 
-TrendingMovieModel movieModelFromJson(String str) => TrendingMovieModel.fromJson(json.decode(str));
+TrendingModel trendingModelFromJson(String str) => TrendingModel.fromJson(json.decode(str));
 
-String movieModelToJson(TrendingMovieModel data) => json.encode(data.toJson());
+String trendingModelToJson(TrendingModel data) => json.encode(data.toJson());
 
-class TrendingMovieModel {
+class TrendingModel {
   bool adult;
   String backdropPath;
   int id;
@@ -16,11 +20,12 @@ class TrendingMovieModel {
   String mediaType;
   List<int> genreIds;
   double popularity;
+  String releaseDate;
   bool video;
   double voteAverage;
   int voteCount;
 
-  TrendingMovieModel({
+  TrendingModel({
     required this.adult,
     required this.backdropPath,
     required this.id,
@@ -32,26 +37,28 @@ class TrendingMovieModel {
     required this.mediaType,
     required this.genreIds,
     required this.popularity,
+    required this.releaseDate,
     required this.video,
     required this.voteAverage,
     required this.voteCount,
   });
 
-  factory TrendingMovieModel.fromJson(Map<String, dynamic> json) => TrendingMovieModel(
-        adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "",
-        id: json["id"] ?? 00,
-        title: json["title"] ?? "",
-        originalLanguage: json["original_language"] ?? "",
-        originalTitle: json["original_title"] ?? "",
-        overview: json["overview"] ?? "",
-        posterPath: json["poster_path"] ?? "",
-        mediaType: json["media_type"] ?? "",
+  factory TrendingModel.fromJson(Map<String, dynamic> json) => TrendingModel(
+        adult: json["adult"],
+        backdropPath: json["backdrop_path"],
+        id: json["id"],
+        title: json["title"] ?? json["name"],
+        originalLanguage: json["original_language"],
+        originalTitle: json["original_title"] ?? json["original_name"],
+        overview: json["overview"],
+        posterPath: json["poster_path"],
+        mediaType: json["media_type"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
-        popularity: json["popularity"]?.toDouble() ?? 0.0,
+        popularity: json["popularity"]?.toDouble(),
+        releaseDate: json["release_date"] ?? json["first_air_date"],
         video: json["video"] ?? false,
-        voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
-        voteCount: json["vote_count"] ?? 0.0,
+        voteAverage: json["vote_average"]?.toDouble(),
+        voteCount: json["vote_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +73,7 @@ class TrendingMovieModel {
         "media_type": mediaType,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "popularity": popularity,
+        "release_date": releaseDate,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,

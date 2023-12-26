@@ -3,11 +3,13 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app_2/controllers/TrendingController.dart';
 import 'package:movie_app_2/screens/Placeholders.dart';
 import 'package:movie_app_2/utils/dataconstants.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../utils/enums.dart';
+import '../widgets/HorizontalScrollingDataWidget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,8 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     DataConstants.trendingController.getTrending("all");
-    // trendingMovieTitle = TrendingController.trendingData[0].title;
-    // backdropPath = "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[0].posterPath}";
     super.initState();
   }
 
@@ -34,9 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
     return Obx(
       () {
-        backdropPath = TrendingController.isTrendingLoading.value == true
-            ? ""
-            : "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[0].posterPath}";
         return TrendingController.isTrendingLoading.value == true
             ? Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
@@ -84,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : Stack(
                 children: [
                   AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 1000),
+                    duration: const Duration(milliseconds: 1500),
                     child: Container(
                       key: ValueKey<String>(backdropPath),
                       height: MediaQuery.of(context).size.height,
@@ -103,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [Colors.transparent, Colors.black54, Colors.black],
+                              colors: [Colors.transparent, Colors.transparent, Colors.black],
                             ),
                           ),
                         ),
@@ -114,20 +111,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: CarouselSlider(
                             options: CarouselOptions(
                               height: 500,
                               enlargeCenterPage: true,
-                              enlargeFactor: 0.2,
+                              enlargeFactor: 0.3,
                               initialPage: 0,
-                              // padEnds: false,
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 5),
                               onPageChanged: (index, reason) {
                                 setState(
                                   () {
-                                    trendingMovieTitle = TrendingController.trendingData[index].title;
+                                    // trendingMovieTitle = TrendingController.trendingData[index].title;
                                     backdropPath =
-                                        "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingData[index].posterPath}";
+                                        "https://image.tmdb.org/t/p/w600_and_h900_bestv2${TrendingController.trendingBackdropPath[index]}";
                                   },
                                 );
                               },
@@ -159,25 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ).toList(),
                           ),
                         ),
-                        Text(
-                          trendingMovieTitle,
-                          style: GoogleFonts.lato(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        const HorizontalScrollingDataWidget(
+                          id: 1,
+                          dataType: HorizontalScrollingDataType.topMovie,
+                          mediaType: MediaType.movie,
                         ),
-                        SizedBox(
-                          height: (MediaQuery.of(context).size.height * 0.05) * 20,
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 20,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {},
-                                title: Text(TrendingController.trendingData[index].title),
-                              );
-                            },
-                          ),
+                        const HorizontalScrollingDataWidget(
+                          id: 2,
+                          dataType: HorizontalScrollingDataType.topShow,
+                          mediaType: MediaType.movie,
                         ),
                       ],
                     ),
