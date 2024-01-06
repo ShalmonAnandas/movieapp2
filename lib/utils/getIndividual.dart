@@ -22,7 +22,7 @@ class GetIndividual {
       if (mediaType == MediaType.MOVIE) {
         movieModel = MovieDetailModel.fromJson(rawData);
         return movieModel;
-      } else if (mediaType == MediaType.MOVIE) {
+      } else if (mediaType == MediaType.TV) {
         tvModel = ShowDetailModel.fromJson(rawData);
         return tvModel;
       }

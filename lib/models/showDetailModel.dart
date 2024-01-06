@@ -20,7 +20,7 @@ class ShowDetailModel {
   bool inProduction;
   List<String> languages;
   DateTime lastAirDate;
-  LastEpisodeToAir lastEpisodeToAir;
+  // LastEpisodeToAir lastEpisodeToAir;
   String name;
   dynamic nextEpisodeToAir;
   // List<Network> networks;
@@ -54,7 +54,7 @@ class ShowDetailModel {
     required this.inProduction,
     required this.languages,
     required this.lastAirDate,
-    required this.lastEpisodeToAir,
+    // required this.lastEpisodeToAir,
     required this.name,
     required this.nextEpisodeToAir,
     // required this.networks,
@@ -82,16 +82,17 @@ class ShowDetailModel {
         backdropPath: json["backdrop_path"],
         createdBy: List<CreatedBy>.from(json["created_by"].map((x) => CreatedBy.fromJson(x))),
         episodeRunTime: List<dynamic>.from(json["episode_run_time"].map((x) => x)),
-        firstAirDate: DateTime.parse(json["first_air_date"]),
+        firstAirDate:
+            DateTime.parse(json["first_air_date"] == "" ? "1970-01-01" : json["first_air_date"] ?? "1970-01-01"),
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
         inProduction: json["in_production"],
         languages: List<String>.from(json["languages"].map((x) => x)),
-        lastAirDate: DateTime.parse(json["last_air_date"]),
-        lastEpisodeToAir: LastEpisodeToAir.fromJson(json["last_episode_to_air"]),
+        lastAirDate: DateTime.parse(json["last_air_date"] ?? "1970-01-01"),
+        // lastEpisodeToAir: LastEpisodeToAir.fromJson(json["last_episode_to_air"]),
         name: json["name"],
-        nextEpisodeToAir: json["next_episode_to_air"] ?? "",
+        nextEpisodeToAir: json["next_episode_to_air"] ?? "1970-01-01",
         // networks: List<Network>.from(json["networks"].map((x) => Network.fromJson(x))),
         numberOfEpisodes: json["number_of_episodes"],
         numberOfSeasons: json["number_of_seasons"],
@@ -127,7 +128,7 @@ class ShowDetailModel {
         "languages": List<dynamic>.from(languages.map((x) => x)),
         "last_air_date":
             "${lastAirDate.year.toString().padLeft(4, '0')}-${lastAirDate.month.toString().padLeft(2, '0')}-${lastAirDate.day.toString().padLeft(2, '0')}",
-        "last_episode_to_air": lastEpisodeToAir.toJson(),
+        // "last_episode_to_air": lastEpisodeToAir.toJson(),
         "name": name,
         "next_episode_to_air": nextEpisodeToAir,
         // "networks": List<dynamic>.from(networks.map((x) => x.toJson())),
@@ -171,7 +172,7 @@ class CreatedBy {
         creditId: json["credit_id"],
         name: json["name"],
         gender: json["gender"],
-        profilePath: json["profile_path"],
+        profilePath: json["profile_path"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -244,7 +245,7 @@ class LastEpisodeToAir {
         episodeNumber: json["episode_number"],
         episodeType: json["episode_type"],
         productionCode: json["production_code"],
-        runtime: json["runtime"],
+        runtime: json["runtime"] ?? 0,
         seasonNumber: json["season_number"],
         showId: json["show_id"],
         stillPath: json["still_path"],

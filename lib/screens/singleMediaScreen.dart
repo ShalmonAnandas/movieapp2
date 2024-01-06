@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:external_video_player_launcher/external_video_player_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:movie_app_2/utils/dataconstants.dart';
 import 'package:movie_app_2/utils/enums.dart';
 import 'package:movie_app_2/widgets/HorizontalScrollingDataWidget.dart';
 
@@ -33,6 +36,37 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
 
   getCurrentMediaModel() async {
     return await currentMediaDetailsObj.getIndividualDetails(widget.id, widget.mediaType);
+  }
+
+  Future<String> getVideoLink() async {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/loading.json'),
+            Text(
+              "Fetching Link, Please be patient",
+              style: GoogleFonts.quicksand(),
+            )
+          ],
+        ),
+      ),
+    );
+    var link = "";
+    if (widget.mediaType == MediaType.MOVIE) {
+      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/movie/${widget.id}');
+      link = response.data["movie_link"];
+    } else {
+      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/tv/${widget.id}/1/1');
+      link = response.data["show_link"];
+    }
+    return link;
   }
 
   @override
@@ -68,30 +102,15 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // VidSrcExtractor.extract('https://vidsrc.me/embed/movie?tmdb=${snapshot.data!.id}').then(
-                      //   (value) async {
-                      //     if (value != null) {
-                      //       print(value);
-                      //       // if (platform.isAndroid) {
-                      //       launchVLCDeepLink(value);
-                      //       // }
-                      //       // Navigator.push(
-                      //       //   context,
-                      //       //   MaterialPageRoute(
-                      //       //     builder: (context) => VideoPlayer(
-                      //       //       name: snapshot.data!.title,
-                      //       //       url: value,
-                      //       //     ),
-                      //       //   ),
-                      //       // );
-                      //     } else {
-                      //       Fluttertoast.showToast(msg: "NOT FOUND");
-                      //     }
-                      //   },
-                      // );
+                      getVideoLink().then(
+                        (link) {
+                          Navigator.pop(context);
+                          ExternalVideoPlayerLauncher.launchMxPlayer(link, MIME.applicationMp4, {"title": "Shalmon"});
+                        },
+                      );
                     },
                     child: Text(
-                      "Watch Now",
+                      (widget.mediaType == MediaType.MOVIE) ? "Watch Now" : "Select Season",
                       style: GoogleFonts.quicksand(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
                   ),
@@ -104,7 +123,7 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'https://image.tmdb.org/t/p/w600_and_h900_bestv2${snapshot.data?.posterPath}',
+                    'https://image.tmdb.org/t/p/w600_and_h900_bestv2${snapshot.data?.backdropPath}',
                   ),
                   fit: BoxFit.cover,
                 ),

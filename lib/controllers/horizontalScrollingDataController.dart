@@ -85,13 +85,14 @@ class HorizontalScrollingDataController {
         await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/tv/$id/similar?language=en-US&page=1");
     List rawData = response.data["results"];
 
-    similarShows.clear();
-    for (var i = 0; i < rawData.length; i++) {
-      similarShows.add(ShowOverviewModel.fromJson(rawData[i]));
+    try {
+      similarShows.clear();
+      for (var i = 0; i < rawData.length; i++) {
+        similarShows.add(ShowOverviewModel.fromJson(rawData[i]));
+      }
+    } catch (e) {
+      log("similarShows Error $e");
     }
-    // } catch (e) {
-    //   log("similarShows Error $e");
-    // }
     return similarShows;
   }
 }

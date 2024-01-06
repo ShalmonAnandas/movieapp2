@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app_2/controllers/GenreController.dart';
 import 'package:movie_app_2/screens/HomeScreen.dart';
+import 'package:movie_app_2/screens/underConstructionPage.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -16,9 +17,9 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> tabItems = [
     const HomeScreen(),
-    const Center(child: Text("Movies")),
-    const Center(child: Text("TV Shows")),
-    const Center(child: Text("Settings")),
+    const UnderConstruction(),
+    const UnderConstruction(),
+    const UnderConstruction(),
   ];
 
   @override
@@ -30,13 +31,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   title: Text(
-      //     "Trending Today",
-      //     style: GoogleFonts.quicksand(fontWeight: FontWeight.w400),
-      //   ),
-      // ),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedIndex,
         items: [

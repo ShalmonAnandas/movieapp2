@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app_2/controllers/TrendingController.dart';
 import 'package:movie_app_2/screens/SearchScreen.dart';
+import 'package:movie_app_2/screens/singleMediaScreen.dart';
 import 'package:movie_app_2/utils/dataconstants.dart';
 
 import '../utils/enums.dart';
@@ -66,6 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                child: Text(
+                                  "Welcome Back, User",
+                                  style: GoogleFonts.quicksand(fontSize: 30),
+                                ),
+                              ),
+                            ],
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: InkWell(
@@ -83,21 +95,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                                },
                                 maxLines: 1,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                            padding: const EdgeInsets.fromLTRB(10, 20, 0, 20),
                             child: CarouselSlider(
                               options: CarouselOptions(
                                 height: 500,
                                 enlargeCenterPage: true,
                                 enlargeFactor: 0.3,
                                 initialPage: 0,
-                                autoPlayInterval: const Duration(seconds: 5),
+                                autoPlay: true,
+                                autoPlayInterval: const Duration(seconds: 10),
+                                padEnds: false,
+                                autoPlayAnimationDuration: const Duration(seconds: 2),
                                 onPageChanged: (index, reason) {
                                   setState(
                                     () {
@@ -113,7 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return Builder(
                                     builder: (BuildContext context) {
                                       return InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SingleMediaScreen(id: i.id, mediaType: i.mediaType)),
+                                          );
+                                        },
                                         child: Container(
                                           width: width,
                                           // margin: const EdgeInsets.all(16.0),

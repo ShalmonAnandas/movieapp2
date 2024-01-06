@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:movie_app_2/utils/enums.dart';
+
 TrendingModel trendingModelFromJson(String str) => TrendingModel.fromJson(json.decode(str));
 
 String trendingModelToJson(TrendingModel data) => json.encode(data.toJson());
@@ -17,7 +19,7 @@ class TrendingModel {
   String originalTitle;
   String overview;
   String posterPath;
-  String mediaType;
+  MediaType mediaType;
   List<int> genreIds;
   double popularity;
   String releaseDate;
@@ -52,7 +54,7 @@ class TrendingModel {
         originalTitle: json["original_title"] ?? json["original_name"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        mediaType: json["media_type"],
+        mediaType: json["media_type"] == "movie" ? MediaType.MOVIE : MediaType.TV,
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         popularity: json["popularity"]?.toDouble(),
         releaseDate: json["release_date"] ?? json["first_air_date"],

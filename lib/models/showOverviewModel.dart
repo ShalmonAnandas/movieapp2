@@ -52,7 +52,7 @@ class ShowOverviewModel {
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        firstAirDate: DateTime.parse(json["first_air_date"]),
+        firstAirDate: DateTime.parse(json["first_air_date"] ?? "1970-01-01"),
         name: json["name"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
