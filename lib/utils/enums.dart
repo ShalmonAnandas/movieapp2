@@ -1,3 +1,3 @@
 enum HorizontalScrollingDataType { topMovie, topShow, cast, similarMovie, similarShow }
 
-enum MediaType { movie, show }
+enum MediaType { MOVIE, PERSON, TV }

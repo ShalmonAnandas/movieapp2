@@ -106,7 +106,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                               MaterialPageRoute(
                                 builder: (context) => SingleMediaScreen(
                                   id: snapshot.data[index].id,
-                                  mediaType: MediaType.movie,
+                                  mediaType: MediaType.MOVIE,
                                 ),
                               ),
                             );
@@ -116,7 +116,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                               MaterialPageRoute(
                                 builder: (context) => SingleMediaScreen(
                                   id: snapshot.data[index].id,
-                                  mediaType: MediaType.show,
+                                  mediaType: MediaType.TV,
                                 ),
                               ),
                             );
@@ -128,7 +128,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                               MaterialPageRoute(
                                 builder: (context) => SingleMediaScreen(
                                   id: snapshot.data[index].id,
-                                  mediaType: MediaType.movie,
+                                  mediaType: MediaType.MOVIE,
                                 ),
                               ),
                             );
@@ -138,7 +138,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                               MaterialPageRoute(
                                 builder: (context) => SingleMediaScreen(
                                   id: snapshot.data[index].id,
-                                  mediaType: MediaType.movie,
+                                  mediaType: MediaType.MOVIE,
                                 ),
                               ),
                             );

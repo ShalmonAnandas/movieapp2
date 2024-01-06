@@ -50,7 +50,7 @@ class HorizontalScrollingDataController {
   static getCast(int id, MediaType mediaType) async {
     try {
       dio.Response response = await CommonFunctions.dioHttpPost(
-          "https://api.themoviedb.org/3/${mediaType == MediaType.movie ? "movie" : "tv"}/$id/credits?language=en-US");
+          "https://api.themoviedb.org/3/${mediaType == MediaType.MOVIE ? "movie" : "tv"}/$id/credits?language=en-US");
       List rawData = response.data["cast"];
 
       cast.clear();

@@ -12,17 +12,17 @@ class GetIndividual {
     print(id);
     try {
       dio.Response response = await CommonFunctions.dioHttpPost(
-          "https://api.themoviedb.org/3/${(mediaType == MediaType.movie) ? "movie" : "tv"}/$id?language=en-US");
+          "https://api.themoviedb.org/3/${(mediaType == MediaType.MOVIE) ? "movie" : "tv"}/$id?language=en-US");
       var rawData = response.data;
       log(rawData.toString());
 
       ShowDetailModel? tvModel;
       MovieDetailModel? movieModel;
 
-      if (mediaType == MediaType.movie) {
+      if (mediaType == MediaType.MOVIE) {
         movieModel = MovieDetailModel.fromJson(rawData);
         return movieModel;
-      } else if (mediaType == MediaType.show) {
+      } else if (mediaType == MediaType.MOVIE) {
         tvModel = ShowDetailModel.fromJson(rawData);
         return tvModel;
       }

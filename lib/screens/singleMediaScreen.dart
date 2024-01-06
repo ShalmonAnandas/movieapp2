@@ -137,7 +137,7 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 15.0),
                           child: Center(
                             child: Text(
-                              widget.mediaType == MediaType.movie ? snapshot.data.title : snapshot.data.originalName,
+                              widget.mediaType == MediaType.MOVIE ? snapshot.data.title : snapshot.data.originalName,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.bold),
                             ),
@@ -169,7 +169,7 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
 
                         HorizontalScrollingDataWidget(
                             id: widget.id,
-                            dataType: (widget.mediaType == MediaType.movie)
+                            dataType: (widget.mediaType == MediaType.MOVIE)
                                 ? HorizontalScrollingDataType.similarMovie
                                 : HorizontalScrollingDataType.similarShow,
                             mediaType: widget.mediaType),
