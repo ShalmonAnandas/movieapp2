@@ -81,76 +81,77 @@ class _SearchScreenState extends State<SearchScreen> {
                       scrollDirection: Axis.vertical,
                       itemCount: snapshot.data!.results.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SingleMediaScreen(
-                                    id: snapshot.data!.results[index].id,
-                                    mediaType: snapshot.data!.results[index].mediaType),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.25,
-                              child: Row(
-                                children: [
-                                  Card(
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    child: snapshot.data!.results[index].posterPath!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                MediaQuery.of(context).size.width * 0.11,
-                                                MediaQuery.of(context).size.height * 0.09,
-                                                MediaQuery.of(context).size.width * 0.11,
-                                                MediaQuery.of(context).size.height * 0.09),
-                                            child: const Icon(
-                                              Icons.broken_image,
-                                              size: 70,
-                                              color: Colors.white30,
+                        return Card(
+                          child: InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SingleMediaScreen(id: snapshot.data!.results[index].id, mediaType: snapshot.data!.results[index].mediaType),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                              child: SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.25,
+                                child: Row(
+                                  children: [
+                                    Card(
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      child: snapshot.data!.results[index].posterPath!.isEmpty
+                                          ? Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  MediaQuery.of(context).size.width * 0.11,
+                                                  MediaQuery.of(context).size.height * 0.09,
+                                                  MediaQuery.of(context).size.width * 0.11,
+                                                  MediaQuery.of(context).size.height * 0.09),
+                                              child: const Icon(
+                                                Icons.broken_image,
+                                                size: 70,
+                                                color: Colors.white30,
+                                              ),
+                                            )
+                                          : Image.network(
+                                              'https://image.tmdb.org/t/p/w600_and_h900_bestv2${snapshot.data?.results[index].posterPath}',
+                                              fit: BoxFit.cover,
+                                              alignment: Alignment.topCenter,
+                                            ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 25),
+                                            child: Text(
+                                              snapshot.data!.results[index].name ?? snapshot.data!.results[index].title!,
+                                              softWrap: true,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.quicksand(fontWeight: FontWeight.w600, fontSize: 18),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
+                                            child: Text(
+                                              snapshot.data!.results[index].overview!,
+                                              softWrap: true,
+                                              maxLines: 7,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.quicksand(fontWeight: FontWeight.w600, fontSize: 12),
                                             ),
                                           )
-                                        : Image.network(
-                                            'https://image.tmdb.org/t/p/w600_and_h900_bestv2${snapshot.data?.results[index].posterPath}',
-                                            fit: BoxFit.cover,
-                                            alignment: Alignment.topCenter,
-                                          ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 25),
-                                          child: Text(
-                                            snapshot.data!.results[index].name ?? snapshot.data!.results[index].title!,
-                                            softWrap: true,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.quicksand(fontWeight: FontWeight.w600, fontSize: 18),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 25),
-                                          child: Text(
-                                            snapshot.data!.results[index].overview!,
-                                            softWrap: true,
-                                            maxLines: 7,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.quicksand(fontWeight: FontWeight.w600, fontSize: 12),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

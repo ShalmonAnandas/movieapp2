@@ -1,9 +1,11 @@
-import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app_2/controllers/GenreController.dart';
 import 'package:movie_app_2/screens/HomeScreen.dart';
+import 'package:movie_app_2/screens/Settings.dart';
 import 'package:movie_app_2/screens/underConstructionPage.dart';
+import 'package:movie_app_2/utils/dataconstants.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const UnderConstruction(),
     const UnderConstruction(),
-    const UnderConstruction(),
+    const SettingScreen(),
   ];
 
   @override
@@ -30,29 +32,53 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
-      bottomNavigationBar: FlashyTabBar(
-        selectedIndex: _selectedIndex,
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text(
+          DataConstants.appBarTitle,
+          style: GoogleFonts.quicksand(fontSize: 30),
+        ),
+      ),
+      bottomNavigationBar: SalomonBottomBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: theme.colorScheme.secondary,
         items: [
-          FlashyTabBarItem(
+          SalomonBottomBarItem(
             icon: const Icon(Icons.home_outlined),
-            title: Text('Trending', style: GoogleFonts.quicksand()),
+            title: Text(
+              'Home',
+              style: GoogleFonts.quicksand(),
+            ),
           ),
-          FlashyTabBarItem(
+          SalomonBottomBarItem(
             icon: const Icon(Icons.movie_creation_outlined),
             title: Text('Movies', style: GoogleFonts.quicksand()),
+            // activeColor: Colors.white,
+            // inactiveColor: Colors.white
           ),
-          FlashyTabBarItem(
+          SalomonBottomBarItem(
             icon: const Icon(Icons.tv_outlined),
             title: Text('TV Shows', style: GoogleFonts.quicksand()),
           ),
-          FlashyTabBarItem(
+          SalomonBottomBarItem(
             icon: const Icon(Icons.settings_outlined),
             title: Text('Settings', style: GoogleFonts.quicksand()),
           ),
         ],
-        onItemSelected: (index) => setState(() {
+        onTap: (index) => setState(() {
           _selectedIndex = index;
+          switch (_selectedIndex) {
+            case 0:
+              DataConstants.appBarTitle = "Welcome Back, User";
+            case 1:
+              DataConstants.appBarTitle = "Movies";
+            case 2:
+              DataConstants.appBarTitle = "TV";
+            case 3:
+              DataConstants.appBarTitle = "Settings";
+          }
         }),
       ),
       body: tabItems[_selectedIndex],

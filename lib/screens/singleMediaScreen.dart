@@ -4,6 +4,7 @@ import 'package:external_video_player_launcher/external_video_player_launcher.da
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:movie_app_2/screens/SelectSeasonScreen.dart';
 import 'package:movie_app_2/utils/dataconstants.dart';
 import 'package:movie_app_2/utils/enums.dart';
 import 'package:movie_app_2/widgets/HorizontalScrollingDataWidget.dart';
@@ -60,10 +61,10 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
     );
     var link = "";
     if (widget.mediaType == MediaType.MOVIE) {
-      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/movie/${widget.id}');
+      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/movie/${widget.id}/${DataConstants.provider}');
       link = response.data["movie_link"];
     } else {
-      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/tv/${widget.id}/1/1');
+      var response = await DataConstants.dio.request('https://vidsrc.applikuapp.com/tv/${widget.id}/1/1/${DataConstants.provider}');
       link = response.data["show_link"];
     }
     return link;
@@ -79,40 +80,43 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
             ),
-            floatingActionButton: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black87, Colors.black],
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10, top: 10),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 10,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
                       ),
                     ),
-                    onPressed: () {
+                  ),
+                  onPressed: () {
+                    if (widget.mediaType == MediaType.MOVIE) {
                       getVideoLink().then(
                         (link) {
                           Navigator.pop(context);
-                          ExternalVideoPlayerLauncher.launchMxPlayer(link, MIME.applicationMp4, {"title": "Shalmon"});
+                          ExternalVideoPlayerLauncher.launchMxPlayer(link, MIME.applicationMp4, {"title": snapshot.data.title});
                         },
                       );
-                    },
-                    child: Text(
-                      (widget.mediaType == MediaType.MOVIE) ? "Watch Now" : "Select Season",
-                      style: GoogleFonts.quicksand(fontWeight: FontWeight.w400, fontSize: 20),
-                    ),
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectSeasonScreen(
+                            seasons: snapshot.data.seasons,
+                            showName: snapshot.data.originalName,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text(
+                    (widget.mediaType == MediaType.MOVIE) ? "Watch Now" : "Select Season",
+                    style: GoogleFonts.quicksand(fontWeight: FontWeight.w400, fontSize: 20),
                   ),
                 ),
               ),
@@ -180,12 +184,6 @@ class _SingleMediaScreenState extends State<SingleMediaScreen> {
                             style: GoogleFonts.quicksand(fontWeight: FontWeight.w400),
                           ),
                         ),
-                        // SimilarMoviesWidget(id: widget.id, mediaType: "movie"),
-                        // HorizontalScrollingDataWidget(
-                        //   id: widget.id,
-                        //   mediaType: HorizontalScrollingDataType.si,
-                        // ),
-
                         HorizontalScrollingDataWidget(
                             id: widget.id,
                             dataType: (widget.mediaType == MediaType.MOVIE)

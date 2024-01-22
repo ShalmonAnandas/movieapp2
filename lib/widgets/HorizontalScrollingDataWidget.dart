@@ -52,9 +52,9 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
           children: [
             Text(
               (widget.dataType == HorizontalScrollingDataType.topShow)
-                  ? "Top Rated Shows"
+                  ? "New Added Shows"
                   : (widget.dataType == HorizontalScrollingDataType.topMovie)
-                      ? "Top Rated Movies"
+                      ? "New Added Movies"
                       : (widget.dataType == HorizontalScrollingDataType.cast)
                           ? "Cast"
                           : (widget.dataType == HorizontalScrollingDataType.similarMovie)
@@ -147,7 +147,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.33,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
                               image: NetworkImage(
                                 (imagePath != "")
@@ -159,7 +159,7 @@ class _HorizontalScrollingDataWidgetState extends State<HorizontalScrollingDataW
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.27,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(8),
                             gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,

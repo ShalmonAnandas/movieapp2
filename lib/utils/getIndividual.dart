@@ -11,8 +11,8 @@ class GetIndividual {
   getIndividualDetails(int id, MediaType mediaType) async {
     print(id);
     try {
-      dio.Response response = await CommonFunctions.dioHttpPost(
-          "https://api.themoviedb.org/3/${(mediaType == MediaType.MOVIE) ? "movie" : "tv"}/$id?language=en-US");
+      dio.Response response =
+          await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/${(mediaType == MediaType.MOVIE) ? "movie" : "tv"}/$id?language=en-US");
       var rawData = response.data;
       log(rawData.toString());
 

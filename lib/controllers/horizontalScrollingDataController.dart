@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart' as dio;
@@ -17,13 +18,19 @@ class HorizontalScrollingDataController {
 
   static getTopMovieList() async {
     try {
-      dio.Response response =
-          await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1");
-      List rawData = response.data["results"];
-
-      topMovies.clear();
-      for (var i = 0; i < rawData.length; i++) {
-        topMovies.add(MovieOverviewModel.fromJson(rawData[i]));
+      // dio.Response response =
+      //     await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1");
+      // List rawData = response.data["results"];
+      //
+      // topMovies.clear();
+      // for (var i = 0; i < rawData.length; i++) {
+      //   topMovies.add(MovieOverviewModel.fromJson(rawData[i]));
+      // }
+      dio.Response response = await CommonFunctions.dioHttpPost("https://vidsrc.xyz/movies/latest/page-1.json");
+      List results = jsonDecode(response.data)["result"];
+      List movieIds = [];
+      for (var result in results) {
+        movieIds.add(result["tmdb_id"]);
       }
     } catch (e) {
       log("topMovie Error $e");
@@ -33,8 +40,7 @@ class HorizontalScrollingDataController {
 
   static getTopShowList() async {
     try {
-      dio.Response response =
-          await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1");
+      dio.Response response = await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1");
       List rawData = response.data["results"];
 
       topShows.clear();
@@ -65,8 +71,7 @@ class HorizontalScrollingDataController {
 
   static getSimilarMovie(int id) async {
     try {
-      dio.Response response =
-          await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/movie/$id/similar?language=en-US&page=1");
+      dio.Response response = await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/movie/$id/similar?language=en-US&page=1");
       List rawData = response.data["results"];
 
       similarMovies.clear();
@@ -81,8 +86,7 @@ class HorizontalScrollingDataController {
 
   static getSimilarShow(int id) async {
     // try {
-    dio.Response response =
-        await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/tv/$id/similar?language=en-US&page=1");
+    dio.Response response = await CommonFunctions.dioHttpPost("https://api.themoviedb.org/3/tv/$id/similar?language=en-US&page=1");
     List rawData = response.data["results"];
 
     try {

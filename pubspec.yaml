@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
-  flashy_tab_bar2: ^0.0.6
   shimmer: ^3.0.0
   carousel_slider: ^4.2.1
   dio: ^5.4.0
@@ -41,6 +40,10 @@ dependencies:
   lottie: ^2.7.0
   url_launcher: ^6.2.2
   external_video_player_launcher: ^0.0.3
+  json_theme: ^4.0.0
+  shared_preferences: ^2.2.2
+  salomon_bottom_bar: ^3.3.2
+  animated_custom_dropdown: ^3.0.0
 
 dev_dependencies:
   flutter_test:

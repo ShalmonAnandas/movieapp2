@@ -1,4 +1,4 @@
-package com.example.movie_app_2
+package com.shalmon.reelio
 
 import io.flutter.embedding.android.FlutterActivity
 
